@@ -1,49 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Rewards.css";
+import { FaMedal, FaGift, FaTrophy } from "react-icons/fa";
 
 function Rewards() {
-  const [points, setPoints] = useState(120); // Example user points
-  const [claimed, setClaimed] = useState([]);
-
-  const rewards = [
-    { id: 1, title: "Healthy Breakfast Badge", cost: 50 },
-    { id: 2, title: "Focus Streak Trophy", cost: 100 },
-    { id: 3, title: "Eco Warrior Badge", cost: 150 },
-    { id: 4, title: "Consistency Crown", cost: 200 },
-  ];
-
-  const claimReward = (reward) => {
-    if (points >= reward.cost) {
-      setPoints(points - reward.cost);
-      setClaimed([...claimed, reward.id]);
-      alert(`🎉 You claimed "${reward.title}"!`);
-    } else {
-      alert("Not enough points to claim this reward 😅");
-    }
-  };
-
   return (
     <div className="rewards-container">
-      <h1 className="rewards-title">🌿 Your Rewards</h1>
-      <p className="rewards-points">Total Points: <strong>{points}</strong></p>
+      <div className="rewards-header">
+        <h1 className="rewards-title">🏆 Rewards & Achievements</h1>
+        <p className="rewards-subtitle">
+          Earn exciting rewards as your child completes daily tasks!
+        </p>
+      </div>
 
       <div className="rewards-grid">
-        {rewards.map((reward) => (
-          <div
-            key={reward.id}
-            className={`reward-card ${claimed.includes(reward.id) ? "claimed" : ""}`}
-          >
-            <h3>{reward.title}</h3>
-            <p>Cost: {reward.cost} pts</p>
-            {claimed.includes(reward.id) ? (
-              <button className="claimed-btn" disabled>✅ Claimed</button>
-            ) : (
-              <button onClick={() => claimReward(reward)} className="claim-btn">
-                Claim Reward
-              </button>
-            )}
-          </div>
-        ))}
+        {/* Reward 1 */}
+        <div className="reward-card">
+          <FaMedal className="reward-icon gold" />
+          <h3 className="reward-name">Gold Star</h3>
+          <p className="reward-desc">
+            Awarded for completing 10 tasks in a row. Keep up the streak!
+          </p>
+        </div>
+
+        {/* Reward 2 */}
+        <div className="reward-card">
+          <FaGift className="reward-icon purple" />
+          <h3 className="reward-name">Surprise Box</h3>
+          <p className="reward-desc">
+            Unlock a random surprise reward after finishing special challenges!
+          </p>
+        </div>
+
+        {/* Reward 3 */}
+        <div className="reward-card">
+          <FaTrophy className="reward-icon blue" />
+          <h3 className="reward-name">Champion Trophy</h3>
+          <p className="reward-desc">
+            Earned by completing all weekly tasks with full progress.
+          </p>
+        </div>
       </div>
     </div>
   );
