@@ -77,7 +77,7 @@ function Home() {
   ];
 
   return (
-    <div className="wrap container-fluid" id="app">
+    <div className="home-container" id="app">
       <main>
         <section className="main-left">
           <div className="hero-upgrade card hero-animated">

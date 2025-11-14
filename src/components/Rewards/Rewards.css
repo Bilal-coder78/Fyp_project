@@ -10,8 +10,8 @@
 }
 
 .rewards-title {
-  font-size: 42px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 700;
   color: #363636;
 }
 
@@ -88,4 +88,37 @@
   .reward-icon {
     font-size: 55px;
   }
+}
+
+.complete-task-btn {
+  background: var(--primary, #2b9d6f);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: transform 0.2s ease;
+}
+
+.complete-task-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.reward-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reward-card.unlocked {
+  opacity: 1;
+  cursor: pointer;
+  animation: unlockAnim 0.4s ease forwards;
+}
+
+@keyframes unlockAnim {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }

@@ -1,8 +1,9 @@
 .habits-container {
   background: #f8fcff;
   min-height: 100vh;
+  width: 100%;
+  max-width: 1200px;
   padding: 1.6rem;
-  font-family: "Poppins", sans-serif;
 }
 
 /* Header */
