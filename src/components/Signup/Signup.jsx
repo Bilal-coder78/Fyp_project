@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./Signup.css";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -26,8 +28,7 @@ function Signup() {
       alert("Passwords do not match ❌");
       return;
     }
-
-    alert(`Welcome to GrowHabits, ${name}! 🌱`);
+    navigate("/login")
   };
 
   return (

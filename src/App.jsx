@@ -7,6 +7,7 @@ import Tracker from "./components/Tracker/Tracker";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Rewards from "./components/Rewards/Rewards";
+import BalloonPop from "./components/Games/BalloonPop";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/rewards" element={<Rewards/>} />
+          <Route path="/games" element={<BalloonPop/>} />
         </Routes>
       </div>
     </Router>
