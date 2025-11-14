@@ -141,10 +141,10 @@ function Home() {
                   <div className="feature-content">
                     <div className="feature-title">{f.title}</div>
                     <div className="small">{f.desc}</div>
-                    <div className="feature-actions">
+                    {/* <div className="feature-actions">
                       <button className="btn btn-primary btn-sm" onClick={() => alert(`${f.title} — Try soon!`)}>Try</button>
                       <button className="btn btn-ghost btn-sm" onClick={() => alert(`${f.title} — Learn more`)}>Learn</button>
-                    </div>
+                    </div> */}
                   </div>
                 </article>
               ))}
@@ -217,11 +217,11 @@ function Home() {
           <div className="card sidebar-card">
             <div className="sidebar-stickers-title">Stickers</div>
             <div className="small">Earn stickers when daily tasks are completed.</div>
-            <div className="sidebar-stickers">
+            {/* <div className="sidebar-stickers">
               <div className="sticker" title="Watered plants">💧</div>
               <div className="sticker" title="Shared lunch">🍎</div>
               <div className="sticker" title="Read book">📖</div>
-            </div>
+            </div> */}
           </div>
           <div className="card sidebar-card quiz-card">
             <div className="quiz-title">🌞 Daily Challenge</div>

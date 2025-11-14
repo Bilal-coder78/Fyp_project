@@ -52,12 +52,6 @@ function Nav() {
         </nav>
 
         <div className="actions">
-          <div className="language-select" style={{ marginRight: "1rem" }}>
-            <select name="" id="" style={{ outline: "none" }}>
-              <option value="">English</option>
-              <option value="">Urdu</option>
-            </select>
-          </div>
           <Link
             className="btn btn-primary"
             id="signupBtn"
