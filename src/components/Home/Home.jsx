@@ -82,7 +82,6 @@ function Home() {
         <section className="main-left">
           <div className="hero-upgrade card hero-animated">
             <div className="hero-left-area">
-              {/* 🌈 Animated Heading */}
               <h1 className="hero-heading animated-heading">
                 Welcome to <span className="gradient-text">GrowHabits 🌱</span>
               </h1>
@@ -166,19 +165,6 @@ function Home() {
                   <button className="btn btn-ghost" onClick={() => (window.location.href = "/signup")}>Sign up a child</button>
                 </div>
               </div>
-
-              <div className="about-visual" aria-hidden>
-                <svg viewBox="0 0 160 160" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="trophy-illustration">
-                  <defs>
-                    <linearGradient id="gA" x1="0" x2="1"><stop offset="0" stopColor="#f7fff6" /><stop offset="1" stopColor="#e6fff0" /></linearGradient>
-                  </defs>
-                  <rect width="160" height="160" rx="12" fill="url(#gA)" />
-                  <g transform="translate(28,26)">
-                    <circle cx="52" cy="30" r="22" fill="#ffe8a8" stroke="#ffd37d" />
-                    <text x="52" y="36" textAnchor="middle" fontSize="18" fontWeight="700" fill="#7a5f2f">⭐</text>
-                  </g>
-                </svg>
-              </div>
             </div>
           </div>
         </section>
@@ -209,8 +195,8 @@ function Home() {
           <div className="card sidebar-card">
             <div className="sidebar-links-title">Quick Links</div>
             <div className="sidebar-links">
-              <a onClick={()=> (window.location.href = "/login")} className="btn btn-ghost">Login</a>
-              <a onClick={()=> (window.location.href = "/signup")} className="btn btn-ghost">Sign up a child</a>
+              <a onClick={() => (window.location.href = "/login")} className="btn btn-ghost">Login</a>
+              <a onClick={() => (window.location.href = "/signup")} className="btn btn-ghost">Sign up a child</a>
             </div>
           </div>
 
