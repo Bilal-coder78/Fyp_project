@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: auto;
   padding: 0 20px;
-  /* position: sticky; */
+  position: relative;
   top: 0;
   z-index: 1000;
 }
@@ -91,7 +91,7 @@ nav {
   box-shadow: 0 8px 24px rgba(61, 190, 255, 0.18);
 }
 
-/* 🌐 Hamburger Icon (hidden on desktop) */
+/* Hamburger Icon */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -99,6 +99,7 @@ nav {
   width: 25px;
   height: 18px;
   cursor: pointer;
+  z-index: 99999;
 }
 
 .hamburger span {

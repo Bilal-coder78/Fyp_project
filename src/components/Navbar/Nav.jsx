@@ -43,9 +43,9 @@ function Nav() {
           <Link to="tracker" className="nav-link">
             Tracker
           </Link>
-          <Link to="games" className="nav-link">
+          {/* <Link to="games" className="nav-link">
             Games
-          </Link>
+          </Link> */}
           <Link to="rewards" className="nav-link">
             Rewards
           </Link>

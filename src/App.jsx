@@ -21,7 +21,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/rewards" element={<Rewards/>} />
-          <Route path="/games" element={<BalloonPop/>} />
+          {/* <Route path="/games" element={<BalloonPop/>} /> */}
           <Route path="/parents" element={<Parents/>} />
         </Routes>
       </div>

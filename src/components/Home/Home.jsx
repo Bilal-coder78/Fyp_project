@@ -65,10 +65,6 @@ function Home() {
     return () => clearInterval(id);
   }, []);
 
-  const handleStart = () => {
-    alert("Let's start growing good habits together! 🌱");
-  };
-
   const features = [
     { id: 1, title: "Gentle Reminders", desc: "Friendly prompts for daily consistency", emoji: "⏰" },
     { id: 2, title: "Rewards & Stickers", desc: "Collect fun stickers for small wins", emoji: "🏅" },

@@ -4,12 +4,10 @@
   --shadow: 0 12px 30px rgba(10, 20, 18, 0.06);
   --muted: #6b7980;
   --primary: #2b9d6f;
-  /* green theme */
   --accent: #8fd6a6;
 }
 
 /* layout */
-
 .home-container{
   width: 100%;
   max-width: 1200px;
