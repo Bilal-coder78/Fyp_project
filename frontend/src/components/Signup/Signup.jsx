@@ -15,7 +15,7 @@ function Signup() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = form;
 
@@ -28,7 +28,33 @@ function Signup() {
       alert("Passwords do not match ❌");
       return;
     }
-    navigate("/login")
+
+    try {
+      const res = await fetch("http://localhost:8000/api/v2/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: name,
+          email,
+          password,
+        }),
+      });
+      const data = await res.json();
+
+      if(!res.ok){
+        alert(data.message || "Registration failed");
+        return;
+      }
+      alert("Account created Successfully!")
+      navigate("/login")
+    }
+    catch (error) {
+      console.error(error);
+      alert("Server error");
+      return;
+    }
   };
 
   return (

@@ -7,14 +7,34 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       alert("Please fill in all fields 🌱");
       return;
     }
-    alert(`Welcome back, ${email}!`);
-    navigate("/habits")
+    try {
+      const res = await fetch("http://localhost:8000/api/v2/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+      alert("Login successful!");
+      navigate("/habits")
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
+    }
   };
 
   return (
