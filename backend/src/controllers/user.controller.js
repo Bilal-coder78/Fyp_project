@@ -21,7 +21,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
     //check if the user already exists
     const existedUser = await User.findOne({
-        $or: [{ email }, { username }]
+        $or: [{ email : email.toLowerCase().trim() }, { username }]
     })
     if (existedUser) {
         throw new ApiError(400, "User already exists with current email or username")
@@ -52,14 +52,12 @@ export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     console.log(email)
 
-    if (!email && !password) {
+    if (!email || !password) {
         throw new ApiError(400, "Email and password are required")
     }
 
     //find the user
-    const user = await User.findOne({
-        $or: [{ email }, { password }]
-    })
+    const user = await User.findOne({ email : email.toLowerCase().trim() })
 
     if (!user) {
         throw new ApiError(400, "User does not exist")
@@ -67,13 +65,25 @@ export const loginUser = asyncHandler(async (req, res) => {
 
     const isPasswordValid = await user.isPasswordCorect(password)
 
-    if(!isPasswordValid) {
+    if (!isPasswordValid) {
         throw new ApiError(400, "Invalid password")
     }
 
+    const token = user.generateAccessToken();
+
+    const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 1000 * 60 * 60 * 24 // 1 day
+    };
+
     const loggedInUser = await User.findById(user._id).select("-password")
 
-    return res.status(200).json(
-        new ApiResponse(200, "User logged in successfully", loggedInUser)
+    return res.status(200).cookie("token", token, options).json(
+        new ApiResponse(200, {
+            user: loggedInUser,
+        },
+            "User logged in successfully")
     )
 })
