@@ -1,37 +1,46 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authContext.jsx"; // 👈 import context
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const { setUser } = useAuth(); // 👈 get setUser from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!email || !password) {
       alert("Please fill in all fields 🌱");
       return;
     }
+
     try {
       const res = await fetch("http://localhost:8000/api/v2/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        credentials: "include",
+        body: JSON.stringify({ email, password }),
+        credentials: "include", // 👈 important for cookies
       });
+
       const data = await res.json();
+
       if (!res.ok) {
         alert(data.message || "Login failed");
         return;
       }
+
+      // ✅ set user in AuthContext
+      setUser(data.data.user);
+
       alert("Login successful!");
-      navigate("/habits")
+      navigate("/habits");
+
     } catch (error) {
       console.log(error);
       alert("Server error");

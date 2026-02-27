@@ -7,6 +7,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Rewards from "./components/Rewards/Rewards";
 import Parents from "./components/Parents/Parents";
+import ProtectedRoute from "./routes/protectedRoute.jsx";
 
 function App() {
   return (
@@ -15,11 +16,11 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/habits" element={<Habits />} />
-          <Route path="/tracker" element={<Tracker/>} />
+          <Route path="/habits" element={<ProtectedRoute><Habits /></ProtectedRoute>} />
+          <Route path="/tracker" element={<ProtectedRoute><Tracker /></ProtectedRoute>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
-          <Route path="/rewards" element={<Rewards/>} />
+          <Route path="/rewards" element={<ProtectedRoute><Rewards /></ProtectedRoute>} />
           <Route path="/parents" element={<Parents/>} />
         </Routes>
       </div>

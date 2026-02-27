@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const navigate = useNavigate()
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -13,21 +14,44 @@ function Signup() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let newErrors = {};
     const { name, email, password, confirmPassword } = form;
 
-    if (!name || !email || !password || !confirmPassword) {
-      alert("Please fill in all fields 🌿");
+    if(!name){
+      newErrors.name = "username is required";
+    }else if(name.length < 4){
+      newErrors.name = "username must be at least 4 characters";
+    }
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    newErrors.email = "Enter a valid email address";
+  }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match ❌");
-      return;
-    }
+    setErrors({});
 
     try {
       const res = await fetch("http://localhost:8000/api/v2/users/register", {
@@ -73,6 +97,7 @@ function Signup() {
               value={form.name}
               onChange={handleChange}
             />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
           <div className="form-group">
@@ -84,6 +109,7 @@ function Signup() {
               value={form.email}
               onChange={handleChange}
             />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
 
           <div className="form-group">
@@ -95,6 +121,7 @@ function Signup() {
               value={form.password}
               onChange={handleChange}
             />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
 
           <div className="form-group">
@@ -106,7 +133,9 @@ function Signup() {
               value={form.confirmPassword}
               onChange={handleChange}
             />
+            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
           </div>
+          {errors.api && <p className="error-text">{errors.api}</p>}
 
           <button type="submit" className="signup-btn">
             Sign Up

@@ -1,4 +1,4 @@
-/* 🌿 Full-page container */
+/*  Full-page container */
 .signup-container {
   min-height: 100vh;
   background: linear-gradient(180deg, #e9fbff 0%, var(--bg) 100%);
@@ -11,7 +11,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* 🌱 Signup card */
+/*  Signup card */
 .signup-card {
   background: #ffffff;
   padding: 40px 45px;
@@ -27,7 +27,7 @@
   transform: scale(1.02);
 }
 
-/* 🌼 Title & Subtitle */
+/*  Title & Subtitle */
 .signup-title {
   color: #166534;
   font-size: 1.8rem;
