@@ -8,6 +8,9 @@ function Home() {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [charIdx, setCharIdx] = useState(0);
+  const [challenge, setChallenge] = useState("");   // store today's challenge
+  const [completed, setCompleted] = useState(false); // store if user completed it
+  const token = localStorage.getItem("token"); // assume you store JWT here
   const typingRef = useRef(null);
 
   const FUN_TEXTS = [
@@ -64,6 +67,28 @@ function Home() {
     }, 5000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    fetch("/api/v2/challenges/today")
+      .then(res => res.json())
+      .then(data => {
+        setChallenge(data.data.challenge);
+      })
+      .catch(err => console.error("Failed to fetch challenge:", err));
+  }, []);
+
+  useEffect(() => {
+    if (!token) return; // skip if not logged in
+
+    fetch("/api/v2/challenges/status", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => setCompleted(data.data.completed))
+      .catch(err => console.error("Failed to fetch challenge status:", err));
+  }, [token]);
 
   const features = [
     { id: 1, title: "Gentle Reminders", desc: "Friendly prompts for daily consistency", emoji: "⏰" },
@@ -207,20 +232,40 @@ function Home() {
           </div>
           <div className="card sidebar-card quiz-card">
             <div className="quiz-title">🌞 Daily Challenge</div>
-            <div className="quiz-question">Did you help someone today?</div>
+            <div className="quiz-question">{challenge || "Loading challenge..."}</div>
             <div className="quiz-actions">
               <button
                 className="btn btn-primary btn-sm"
-                onClick={() => alert("Awesome! 🌟 Keep spreading kindness!")}
+                disabled={completed || !token} // disable if completed or not logged in
+                onClick={async () => {
+                  try {
+                    const res = await fetch("/api/challenge/complete", {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    });
+
+                    if (res.ok) {
+                      setCompleted(true);
+                      alert("Awesome! 🌟 Challenge completed!");
+                    } else {
+                      alert("Failed to complete challenge");
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert("Something went wrong");
+                  }
+                }}
               >
-                ✅ Yes I Did!
+                {completed ? "✅ Completed" : "✅ Yes I Did!"}
               </button>
-              <button
+              {/* <button
                 className="btn btn-ghost btn-sm"
                 onClick={() => alert("Try again tomorrow! 💪")}
               >
                 🔁 Try Again
-              </button>
+              </button> */}
             </div>
             <div className="quiz-footer">New challenge every day</div>
           </div>
