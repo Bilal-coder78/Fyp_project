@@ -10,7 +10,6 @@ function Home() {
   const [charIdx, setCharIdx] = useState(0);
   const [challenge, setChallenge] = useState("");   // store today's challenge
   const [completed, setCompleted] = useState(false); // store if user completed it
-  const token = localStorage.getItem("token"); // assume you store JWT here
   const typingRef = useRef(null);
 
   const FUN_TEXTS = [
@@ -69,7 +68,9 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v2/challenges/today")
+    fetch("http://localhost:8000/api/v2/challenges/today", {
+      credentials: "include", // important to include cookies for auth
+    })
       .then(res => res.json())
       .then(data => {
         setChallenge(data.data.challenge);
@@ -78,17 +79,13 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (!token) return; // skip if not logged in
-
-    fetch("/api/v2/challenges/status", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    fetch("http://localhost:8000/api/v2/challenges/status", {
+      credentials: "include", // important to include cookies for auth
     })
       .then(res => res.json())
       .then(data => setCompleted(data.data.completed))
       .catch(err => console.error("Failed to fetch challenge status:", err));
-  }, [token]);
+  }, []);
 
   const features = [
     { id: 1, title: "Gentle Reminders", desc: "Friendly prompts for daily consistency", emoji: "⏰" },
@@ -207,8 +204,8 @@ function Home() {
               <div className="fun-title">Today's Tip</div>
               <div className="fun-text">{FUN_TEXTS[funIndex]}</div>
               <div className="fun-actions">
-                <button className="btn btn-primary btn-sm" onClick={() => alert("Nice! Try it today.")}>Try it</button>
-                <button className="btn btn-ghost btn-sm" onClick={() => setFunIndex((i) => (i + 1) % FUN_TEXTS.length)}>Next</button>
+                {/* <button className="btn btn-primary btn-sm" onClick={() => alert("Nice! Try it today.")}>Try it</button> */}
+                <button className="btn btn-primary btn-sm" onClick={() => setFunIndex((i) => (i + 1) % FUN_TEXTS.length)}>Next</button>
               </div>
             </div>
           </div>
@@ -236,14 +233,12 @@ function Home() {
             <div className="quiz-actions">
               <button
                 className="btn btn-primary btn-sm"
-                disabled={completed || !token} // disable if completed or not logged in
+                disabled={completed} // disable if completed or not logged in
                 onClick={async () => {
                   try {
-                    const res = await fetch("/api/challenge/complete", {
+                    const res = await fetch("http://localhost:8000/api/v2/challenges/complete", {
                       method: "POST",
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
+                      credentials: "include", // important to include cookies for auth
                     });
 
                     if (res.ok) {
