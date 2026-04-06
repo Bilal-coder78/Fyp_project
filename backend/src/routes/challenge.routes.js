@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { getTodaysChallenge, completeChallenge } from "../controllers/challenge.controller.js";
+import { getTodaysChallenge, completeChallenge, getChallengeStatus } from "../controllers/challenge.controller.js";
 
 const router = Router();
 
