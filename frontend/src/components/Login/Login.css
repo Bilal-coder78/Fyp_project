@@ -101,3 +101,24 @@
 .signup-text a:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  background-color: #ffe0e0;
+  color: #d8000c;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.field-error {
+  color: #d8000c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.input-error {
+  border: 1px solid #d8000c;
+  outline: none;
+}
