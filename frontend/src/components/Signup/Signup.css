@@ -112,6 +112,12 @@
   text-decoration: underline;
 }
 
+.error-text {
+  color: #d8000c;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
 /* 📱 Responsive */
 @media (max-width: 480px) {
   .signup-card {

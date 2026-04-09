@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 function Signup() {
   const navigate = useNavigate()
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -14,7 +16,7 @@ function Signup() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    setErrors({ ...errors, [e.target.name]: "", api: "" });
   };
 
   const handleSubmit = async (e) => {
@@ -22,17 +24,17 @@ function Signup() {
     let newErrors = {};
     const { name, email, password, confirmPassword } = form;
 
-    if(!name){
+    if (!name) {
       newErrors.name = "username is required";
-    }else if(name.length < 4){
+    } else if (name.length < 4) {
       newErrors.name = "username must be at least 4 characters";
     }
 
     if (!email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-    newErrors.email = "Enter a valid email address";
-  }
+      newErrors.email = "Enter a valid email address";
+    }
 
     if (!password) {
       newErrors.password = "Password is required";
@@ -50,7 +52,7 @@ function Signup() {
       setErrors(newErrors);
       return;
     }
-
+    setLoading(true);
     setErrors({});
 
     try {
@@ -67,17 +69,29 @@ function Signup() {
       });
       const data = await res.json();
 
-      if(!res.ok){
-        alert(data.message || "Registration failed");
+      if (!res.ok) {
+        setErrors({ api: data.message || "Registration failed" });
         return;
       }
-      alert("Account created Successfully!")
-      navigate("/login")
+
+      setSuccess("Account created successfully! Redirecting to login...");
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2500);
     }
     catch (error) {
       console.error(error);
-      alert("Server error");
+      setErrors({ api: "Registration failed. Please try again." });
       return;
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -86,6 +100,8 @@ function Signup() {
       <div className="signup-card">
         <h1 className="signup-title">Create Account 🌿</h1>
         <p className="signup-subtitle">Join GrowHabits and start building better routines.</p>
+
+        {errors.api && <p className="error-text">{errors.api}</p>}
 
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
@@ -135,10 +151,11 @@ function Signup() {
             />
             {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
           </div>
-          {errors.api && <p className="error-text">{errors.api}</p>}
 
-          <button type="submit" className="signup-btn">
-            Sign Up
+          {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+
+          <button disabled={loading || success} type="submit" className="signup-btn">
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
 
