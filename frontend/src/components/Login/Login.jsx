@@ -1,49 +1,80 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/authContext.jsx"; // 👈 import context
+import { useAuth } from "../../context/authContext.jsx";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
-  const { setUser } = useAuth(); // 👈 get setUser from context
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    api: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("Please fill in all fields 🌱");
+    // reset errors
+    setErrors({ email: "", password: "", api: "" });
+
+    let newErrors = {};
+
+    // frontend validation
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors((prev) => ({ ...prev, ...newErrors }));
       return;
     }
 
     try {
+      setLoading(true);
+
       const res = await fetch("http://localhost:8000/api/v2/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: "include", // 👈 important for cookies
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Login failed");
+        setErrors((prev) => ({
+          ...prev,
+          api: data.message || "Email or password is incorrect",
+        }));
         return;
       }
 
-      // ✅ set user in AuthContext
       setUser(data.data.user);
 
-      alert("Login successful!");
-      navigate("/habits");
-
+      setTimeout(() => {
+        navigate("/Home")
+      }, 1200);
     } catch (error) {
       console.log(error);
-      alert("Server error");
+      setErrors((prev) => ({
+        ...prev,
+        api: "Email or password is incorrect",
+      }));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,6 +84,8 @@ function Login() {
         <h1 className="login-title">GrowHabits 🌿</h1>
         <p className="login-subtitle">Welcome back! Let’s grow your habits.</p>
 
+        {errors.api && <div className="error-message">{errors.api}</div>}
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <label>Email</label>
@@ -61,7 +94,9 @@ function Login() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className={errors.email ? "input-error" : ""}
             />
+            {errors.email && <span className="field-error">{errors.email}</span>}
           </div>
 
           <div className="form-group">
@@ -71,11 +106,13 @@ function Login() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className={errors.password ? "input-error" : ""}
             />
+            {errors.password && <span className="field-error">{errors.password}</span>}
           </div>
 
-          <button type="submit" className="login-btn">
-            Login
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
